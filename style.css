@@ -1,0 +1,573 @@
+/* ==========================================================================
+   DESIGN LANGUAGE SYSTEM: TOKENS & VARIABLES
+   ========================================================================== */
+:root {
+    --bg-color: #ffffff;
+    --surface-color: #f8fafc;
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --primary-blue: #2563eb;       /* Modern Blue Accent */
+    --dark-blue: #1e3a8a;          /* Deep Hospital Primary Theme */
+    --border-color: #e2e8f0;
+    --emergency-red: #ef4444;
+    --success-green: #10b981;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+}
+
+/* --- DARK MODE MODIFIERS --- */
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --surface-color: #1e293b;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary-blue: #3b82f6;
+    --dark-blue: #2563eb;
+    --border-color: #334155;
+    --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+}
+
+/* ==========================================================================
+   BASE RESETS
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    padding-bottom: 80px; /* Space for structural floating chat widget */
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & GLOBAL UTILITIES
+   ========================================================================== */
+h1, h2, h3, h4 {
+    color: var(--dark-blue);
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+[data-theme="dark"] h1, 
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4 {
+    color: #ffffff;
+}
+
+.text-accent { color: var(--primary-blue); }
+.text-emergency { color: var(--emergency-red) !important; }
+.text-safe { color: var(--success-green) !important; }
+.w-100 { width: 100%; }
+.hidden { display: none !important; }
+
+/* ==========================================================================
+   HEADER & NAVIGATION
+   ========================================================================== */
+.emergency-bar {
+    background-color: var(--emergency-red);
+    color: white;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 1000;
+    position: relative;
+}
+
+.btn-emergency {
+    background-color: white;
+    color: var(--emergency-red);
+    border: none;
+    padding: 0.4rem 1rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.btn-emergency:hover {
+    transform: scale(1.03);
+}
+
+/* --- LOGO ENGINE --- */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--dark-blue);
+}
+[data-theme="dark"] .logo { color: white; }
+
+.logo-icon {
+    position: relative;
+    font-size: 1.8rem;
+    color: var(--primary-blue);
+    display: inline-block;
+}
+
+.heart-checker {
+    position: absolute;
+    font-size: 0.75rem;
+    color: white;
+    top: 35%;
+    left: 15%;
+}
+
+.lookup-glass {
+    position: absolute;
+    font-size: 0.8rem;
+    color: var(--dark-blue);
+    bottom: -2px;
+    right: -4px;
+    background: var(--bg-color);
+    border-radius: 50%;
+    padding: 1px;
+}
+
+/* --- MAIN NAVBAR --- */
+.navbar {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    padding-bottom: 0.25rem;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-item:hover, 
+.nav-item.active {
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.lang-select {
+    padding: 0.3rem;
+    border-radius: 4px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    outline: none;
+}
+
+/* ==========================================================================
+   LAYOUT CONTAINERS & TABS
+   ========================================================================== */
+.content-wrapper {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* --- HERO BANNER --- */
+.hero {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, var(--surface-color) 0%, var(--bg-color) 100%);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+.hero p { color: var(--text-muted); font-size: 1.1rem; max-width: 700px; margin: 0 auto 1.5rem; }
+.hero-buttons { display: flex; justify-content: center; gap: 1rem; }
+
+/* ==========================================================================
+   CARDS, GRIDS, & CORE LAYOUT TOOLS
+   ========================================================================== */
+.card {
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+.feature-card {
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    text-align: center;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary-blue);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+}
+
+/* --- GRID INFRASTRUCTURE --- */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.video-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.video-thumb {
+    background: #1e3a8a;
+    color: white;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   FORM CONTROLS & BUTTONS
+   ========================================================================== */
+.btn-primary, 
+.btn-secondary {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s ease;
+}
+
+.btn-primary { background-color: var(--primary-blue); color: white; }
+.btn-secondary { background-color: var(--border-color); color: var(--text-color); }
+.btn-primary:hover, .btn-secondary:hover { opacity: 0.9; }
+
+.btn-icon {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-login {
+    background: var(--dark-blue);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- INTERACTIVE FORM LABELS & INPUTS --- */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.form-group input, 
+.form-group select, 
+.form-group textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
+    border-color: var(--primary-blue);
+}
+
+/* ==========================================================================
+   SYMPTOM ECOSYSTEM & AI SYSTEMS
+   ========================================================================== */
+.symptom-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.ai-blank {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--text-muted);
+}
+
+.ai-result-box {
+    background: var(--bg-color);
+    border: 2px solid var(--primary-blue);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-top: 1rem;
+}
+
+/* ==========================================================================
+   DOCTORS MATRIX ENGINE
+   ========================================================================== */
+.filter-bar {
+    background: var(--surface-color);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+}
+
+.doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.doctor-profile-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: box-shadow 0.2s ease;
+}
+
+/* --- HIGHLIGHT SCHEMES --- */
+.doctor-profile-card.highlight {
+    border: 2px solid gold;
+    background: linear-gradient(to bottom, var(--surface-color), #fffbeb);
+}
+
+[data-theme="dark"] .doctor-profile-card.highlight {
+    background: linear-gradient(to bottom, var(--surface-color), #2d2814);
+}
+
+.doctor-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.doc-rating { color: #f59e0b; margin: 0.3rem 0; font-size: 0.85rem;}
+
+/* ==========================================================================
+   DASHBOARD INFRASTRUCTURE
+   ========================================================================== */
+.dashboard-toggle-bar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-toggle-bar .btn-secondary.active {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.role-dash-view { display: none; }
+.role-dash-view.active-view { display: block; }
+
+.metric-badge {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.data-table th, 
+.data-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.data-table th { background: var(--bg-color); }
+
+/* ==========================================================================
+   MODALS & OVERLAYS
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-card {
+    background: var(--bg-color);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
+
+.flex-buttons { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem; }
+
+/* ==========================================================================
+   LIVE CHATBOT OVERLAY ENGINE
+   ========================================================================== */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 320px;
+    background: var(--surface-color);
+    border: 2px solid var(--dark-blue);
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    z-index: 1500;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: var(--dark-blue);
+    color: white;
+    padding: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-messages {
+    height: 220px;
+    overflow-y: auto;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    background: var(--bg-color);
+}
+
+.msg { margin-bottom: 0.6rem; padding: 0.5rem; border-radius: 6px; max-width: 85%; }
+.ai-msg { background: var(--border-color); color: var(--text-color); align-self: flex-start; }
+.user-msg { background: var(--primary-blue); color: white; margin-left: auto; text-align: right; }
+
+.chat-input-area {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+}
+
+.chat-input-area input {
+    flex: 1;
+    border: none;
+    padding: 0.5rem;
+    background: var(--surface-color);
+    color: var(--text-color);
+    outline: none;
+}
+
+.chat-input-area button {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   MOBILE & RESPONSIVE MEDIA BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .symptom-layout { 
+        grid-template-columns: 1fr; 
+    }
+}
