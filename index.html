@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Hospital - Modern Healthcare Portal</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Local VS Code Connected Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="emergency-bar">
+        <span><i class="fa-solid fa-triangle-exclamation"></i> Medical Emergency? Speak to our AI or trigger an ambulance immediately.</span>
+        <button class="btn-emergency" onclick="triggerEmergency()"><i class="fa-solid fa-phone"></i> CALL EMERGENCY NOW</button>
+    </div>
+
+    <header class="navbar">
+        <div class="logo" onclick="switchTab('home')">
+            <div class="logo-icon">
+                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-wave-square heart-checker"></i>
+                <i class="fa-solid fa-magnifying-glass lookup-glass"></i>
+            </div>
+            <span>Tab Hospital</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-item active" onclick="switchTab('home')">Home</a>
+            <a href="#" class="nav-item" onclick="switchTab('about')">About</a>
+            <a href="#" class="nav-item" onclick="switchTab('symptom')">Symptom Checker</a>
+            <a href="#" class="nav-item" onclick="switchTab('doctors')">Doctors</a>
+            <a href="#" class="nav-item" onclick="switchTab('trackers')">Health Trackers</a>
+            <a href="#" class="nav-item" onclick="switchTab('dashboards')">Dashboards</a>
+            <a href="#" class="nav-item" onclick="switchTab('contact')">Contact</a>
+        </nav>
+        <div class="nav-actions">
+            <select id="langSelector" class="lang-select" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="sw">Kiswahili</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+            </select>
+            <button class="btn-icon" onclick="toggleVoiceAssist()" title="Voice Assistance"><i class="fa-solid fa-microphone"></i></button>
+            <button class="btn-icon" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+            <button class="btn-login" onclick="switchTab('dashboards')">Sign In</button>
+        </div>
+    </header>
+
+    <main class="content-wrapper">
+
+        <section id="tab-home" class="tab-content active">
+            <div class="hero">
+                <h1>Your Health, Our Priority <br><span class="text-accent">Powered by Smart AI Care</span></h1>
+                <p>Welcome to Tab Hospital. Check symptoms instantly, track your health metrics, consult 20+ specialized medical professionals, or talk directly to our AI Medical Companion.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary" onclick="switchTab('symptom')">Check Symptoms Now</button>
+                    <button class="btn-secondary" onclick="switchTab('doctors')">View Doctors Profiles</button>
+                </div>
+            </div>
+
+            <div class="grid-3">
+                <div class="card feature-card" onclick="switchTab('trackers')">
+                    <i class="fa-solid fa-calculator card-icon"></i>
+                    <h3>BMI & Tracker System</h3>
+                    <p>Track your physical fitness, mental wellbeing, and calculate metrics dynamically offline.</p>
+                </div>
+                <div class="card feature-card" onclick="openAmbulanceModal()">
+                    <i class="fa-solid fa-ambulance card-icon text-emergency"></i>
+                    <h3>Instant Ambulance Request</h3>
+                    <p>Dispatches dispatch units directly to your GPS coordinates instantly with one click.</p>
+                </div>
+                <div class="card feature-card" onclick="switchTab('symptom')">
+                    <i class="fa-solid fa-robot card-icon"></i>
+                    <h3>Smart AI Triage</h3>
+                    <p>Enables safe triage based on metrics, gender, age, medical histories, and instant risk alerts.</p>
+                </div>
+            </div>
+
+            <div class="section-container">
+                <h2 class="section-title">Educational Hub: Importance of Early Symptom Tracking</h2>
+                <div class="video-grid">
+                    <div class="video-card">
+                        <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
+                        <h4>1. Why Smart AI Triage Saves Critical Patient Lives</h4>
+                        <p>Learn how automated symptom checks decrease waiting room congestion.</p>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
+                        <h4>2. Catching Early Cardiovascular Signs At Home</h4>
+                        <p>Recognizing the baseline differences between simple acid reflux and emergency indicators.</p>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
+                        <h4>3. Understanding Offline Health Registries</h4>
+                        <p>How Tab Hospital guarantees functionality even when cellular connection drops completely.</p>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
+                        <h4>4. Telehealth Video Conferencing Ethics</h4>
+                        <p>Best practical guidelines for prepping before entering a virtual call room with your doctor.</p>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
+                        <h4>5. Managing Multi-Language Healthcare Data</h4>
+                        <p>Breaking down speech and translation boundaries for effective diagnosis in global systems.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-about" class="tab-content">
+            <div class="section-container">
+                <h2>About Tab Hospital</h2>
+                <p class="subtitle">How Our Smart Portal Works For You</p>
+                <div class="about-explanation">
+                    <p>Tab Hospital bridges advanced artificial intelligence with real-world medical practice seamlessly. Instead of guessing, here is how our ecosystem functions:</p>
+                    <div class="step-list">
+                        <div class="step-item">
+                            <span class="step-num">1</span>
+                            <div>
+                                <strong>Input Metrics:</strong> Provide your basic details such as Age, Weight, and Symptoms so the platform can customize baseline data perfectly.
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">2</span>
+                            <div>
+                                <strong>AI Scan Engine:</strong> The system looks online and cross-references a dynamic medicine database to trace patterns (e.g., matching severe headache to migraine alternatives or critical warnings).
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">3</span>
+                            <div>
+                                <strong>Instant Route to Doctors:</strong> If highly dangerous conditions appear, it immediately screens appropriate practitioners (featuring our leading provider, <strong>Dr. Tabitha</strong>) to set appointments or start emergency video logs.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-symptom" class="tab-content">
+            <div class="symptom-layout">
+                <div class="card input-panel">
+                    <h3>AI Triage & Patient Demographics</h3>
+                    <hr>
+                    <form id="symptomForm" onsubmit="runAISymptomCheck(event)">
+                        <div class="form-group">
+                            <label>Age</label>
+                            <input type="number" id="patAge" required min="1" max="120" placeholder="e.g. 34">
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select id="patGender">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" id="patWeight" required min="2" max="250" placeholder="e.g. 72">
+                        </div>
+                        <div class="form-group">
+                            <label>Known Medical History / Chronic Issues</label>
+                            <textarea id="patHistory" placeholder="e.g. Hypertension, Asthma, None" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>What symptoms are you facing right now?</label>
+                            <input type="text" id="patSymptomInput" required placeholder="e.g. Severe crushing chest pain, or headache">
+                        </div>
+                        <button type="submit" class="btn-primary w-100"><i class="fa-solid fa-magnifying-glass"></i> Ask AI to Follow Up & Search Online</button>
+                    </form>
+                </div>
+
+                <div class="card results-panel">
+                    <h3>Tab Online System Diagnostic Output</h3>
+                    <hr>
+                    <div id="aiConsoleDefault" class="ai-blank">
+                        <i class="fa-solid fa-robot" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <p>Fill out the symptom registry form and press submit. The engine will look online to run trace analytics automatically.</p>
+                    </div>
+                     
+                    <div id="aiConsoleResult" class="ai-result-box hidden">
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-doctors" class="tab-content">
+            <div class="section-container">
+                <h2>Meet Our Clinical Specialists</h2>
+                <p class="subtitle">Select your preferred practitioner below to coordinate online bookings or review treatment fields.</p>
+                 
+                <div class="filter-bar">
+                    <span>Filtering Matches based on Auto-Symptom Tracing:</span>
+                    <button class="btn-secondary btn-sm" onclick="filterDoctors('All')">Show All 20 Profiles</button>
+                    <button class="btn-secondary btn-sm" onclick="filterDoctors('Cardiology')">Cardiology Team</button>
+                    <button class="btn-secondary btn-sm" onclick="filterDoctors('Neurology')">Neurology Team</button>
+                </div>
+
+                <div class="doctors-grid" id="doctorsContainer">
+                    </div>
+            </div>
+        </section>
+
+        <section id="tab-trackers" class="tab-content">
+            <div class="grid-3">
+                <div class="card">
+                    <h3><i class="fa-solid fa-calculator"></i> Offline BMI Tool</h3>
+                    <div class="form-group">
+                        <label>Height (cm)</label>
+                        <input type="number" id="bmiHeight" placeholder="e.g. 175">
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" id="bmiWeight" placeholder="e.g. 70">
+                    </div>
+                    <button class="btn-primary" onclick="calcBMI()">Calculate</button>
+                    <div id="bmiResult" class="metric-output"></div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-brain"></i> Mood Tracker</h3>
+                    <p>Log daily stress levels to prevent anxiety spikes:</p>
+                    <select id="moodSelect" class="form-group" style="width:100%; padding:0.5rem;">
+                        <option value="Excellent / Calm">Excellent / Calm</option>
+                        <option value="Fatigued / Managed">Fatigued / Managed</option>
+                        <option value="Highly Stressed / Migraine Risk">Highly Stressed / Migraine Risk</option>
+                    </select>
+                    <button class="btn-primary" onclick="saveMood()">Save Offline Entry</button>
+                    <div id="moodResult" class="metric-output"></div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fa-solid fa-pills"></i> Medicine Quick Lookup</h3>
+                    <input type="text" id="medSearchKey" placeholder="e.g. Paracetamol, Aspirin" onkeyup="searchMedicineDB()" style="width:100%; padding:0.5rem; border-radius:4px; border:1px solid var(--border-color);">
+                    <div id="medDBResult" class="metric-output" style="font-size:0.85rem; max-height:150px; overflow-y:auto;">
+                        Type a common pharmaceutical name to extract indicators.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:2rem;">
+                <h3><i class="fa-solid fa-book-medical"></i> Preventative Health Insights & Blog</h3>
+                <hr>
+                <div class="grid-3">
+                    <div class="blog-item">
+                        <h5>Hydration Mechanics & Cranial Tension</h5>
+                        <p>How 85% of standard localized headaches trace directly back to simple vascular dehydration profiles.</p>
+                    </div>
+                    <div class="blog-item">
+                        <h5>Sodium Balancing Indexes</h5>
+                        <p>Cardiology metrics showing direct correlation maps between high table salt configurations and blood force parameters.</p>
+                    </div>
+                    <div class="blog-item">
+                        <h5>Maintaining Sleep Integrity</h5>
+                        <p>The impact of blue light screens on nervous system regeneration phases during deep REM tracking.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-dashboards" class="tab-content">
+            <div class="dashboard-toggle-bar">
+                <button class="btn-secondary active" onclick="switchDashboardRole('patient')">Patient View</button>
+                <button class="btn-secondary" onclick="switchDashboardRole('doctor')">Doctor Portal</button>
+                <button class="btn-secondary" onclick="switchDashboardRole('admin')">System Admin Portal</button>
+            </div>
+
+            <div id="dash-patient" class="role-dash-view active-view">
+                <div class="card">
+                    <h3>Welcome Back, Patient Record Registry</h3>
+                    <p><strong>Status:</strong> Active Account (Offline Storage Active via Browser Cache)</p>
+                    <div class="grid-3" style="margin-top:1rem;">
+                        <div class="metric-badge">Historical Scans: <span id="dashHistoryCount">0</span></div>
+                        <div class="metric-badge">Scheduled Video Calls: 1 Session Pending</div>
+                        <div class="metric-badge">Active Balance Due: $0.00 (Copay Complete)</div>
+                    </div>
+                    <h4 style="margin-top:1.5rem;">Secure Payment Channel Simulation</h4>
+                    <div class="payment-box">
+                        <input type="number" placeholder="Enter Payment Amount ($)" id="payAmount" style="padding:0.5rem; width:150px;">
+                        <button class="btn-primary" onclick="simulatePayment()">Submit Digital Copay</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="dash-doctor" class="role-dash-view">
+                <div class="card">
+                    <h3>Clinical Schedule & Consultation Ledger</h3>
+                    <p>Logged in as: <strong>Staff Practitioner</strong></p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Reported Symptom Matrix</th>
+                                <th>AI Risk Code</th>
+                                <th>Action Assigned</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#90822</td>
+                                <td>Migraine headache cluster traces</td>
+                                <td class="text-safe">LOW RISK</td>
+                                <td><button class="btn-secondary btn-sm" onclick="alert('Starting encrypted WebRTC frame context...')">Open Video Call</button></td>
+                            </tr>
+                            <tr>
+                                <td>#88121</td>
+                                <td>Acute pressure localized left jaw arm line</td>
+                                <td class="text-emergency">CRITICAL - HEART ATTACK RISK</td>
+                                <td><button class="btn-emergency btn-sm" onclick="alert('Emergency ambulance sequence already confirmed.')">Ambulance Coordinates</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="dash-admin" class="role-dash-view">
+                <div class="card">
+                    <h3>Enterprise Infrastructure Monitor</h3>
+                    <p>System Configuration Profile: <strong>Tab Hospital Global Root</strong></p>
+                    <hr>
+                    <ul>
+                        <li><strong>AI Engine Telemetry:</strong> Operational (Cloud Database Mirror Online)</li>
+                        <li><strong>Offline Resiliency:</strong> Cache manifests enabled for continuous symptom parsing.</li>
+                        <li><strong>Discord API Sync:</strong> Hook actively monitoring triage alert logs.</li>
+                        <li><strong>Payment Gateways:</strong> Sandbox simulation integrated.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-contact" class="tab-content">
+            <div class="card">
+                <h2>Connect With Tab Hospital Central Offices</h2>
+                <p>Have direct feedback on telemetry systems or need configuration updates?</p>
+                <form onsubmit="event.preventDefault(); alert('Message systematically stored.');" style="margin-top:1.5rem;">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" placeholder="John Doe" required style="width:100%; padding:0.5rem;">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="johndoe@example.com" required style="width:100%; padding:0.5rem;">
+                    </div>
+                    <div class="form-group">
+                        <label>Message Content</label>
+                        <textarea placeholder="Write message..." rows="4" style="width:100%; padding:0.5rem;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Deliver Communications Securely</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <div class="chatbot-container" id="chatBotContainer">
+        <div class="chat-header" onclick="toggleChatWindow()">
+            <span><i class="fa-solid fa-robot"></i> Tab AI Live Assistant</span>
+            <i class="fa-solid fa-chevron-up" id="chatToggleIcon"></i>
+        </div>
+        <div class="chat-window hidden" id="chatWindow">
+            <div class="chat-messages" id="chatMessages">
+                <div class="msg ai-msg">Hello! I am Tab Hospital's automated AI assistant. Tell me your symptoms, and I will search online to evaluate risk paths.</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInputField" placeholder="Type a symptom (e.g. headache, chest pain)..." onkeypress="handleChatKey(event)">
+                <button onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="ambulanceModal">
+        <div class="modal-card">
+            <h3><i class="fa-solid fa-truck-medical text-emergency"></i> Dispatching Tab Emergency Ambulance</h3>
+            <p>The system is using your browser's geolocation context to dispatch the closest vehicle to your address. This system bypasses standard backlogs.</p>
+            <hr>
+            <p><strong>Action Directive:</strong> Remain calm, secure doors, and gather basic medical historical records for the team.</p>
+            <button class="btn-secondary" onclick="closeAmbulanceModal()">Cancel Dispatch Order</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="appointmentModal">
+        <div class="modal-card">
+            <h3>Coordinate Appointment: <span id="targetDocName">Doctor</span></h3>
+            <p>Specialty Field Validation: <span id="targetDocSpecialty">General</span></p>
+            <hr>
+            <form onsubmit="processBooking(event)">
+                <div class="form-group">
+                    <label>Confirm Patient Full Name</label>
+                    <input type="text" required id="bookName" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label>Preferred Date & Time Window</label>
+                    <input type="datetime-local" required id="bookTime">
+                </div>
+                <div class="form-group">
+                    <label>Consultation Methodology</label>
+                    <select id="bookType">
+                        <option value="Secure Video Call Room">Encrypted Telehealth Video Call Room</option>
+                        <option value="In-person Clinical Visit">In-person Physical Clinical Visit</option>
+                    </select>
+                </div>
+                <div class="flex-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeBookingModal()">Close</button>
+                    <button type="submit" class="btn-primary">Confirm Secure Booking Slot</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <audio id="emergencyAudio" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
+
+    <!-- Local VS Code Connected Script File -->
+    <script src="index.js"></script>
+</body>
+</html>
